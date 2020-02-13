@@ -78,8 +78,8 @@ pub struct DOM {
 }
 
 impl DOM {
-    pub fn new(root_node: DomElem, classes_node: HashMap<String, Vec<Rc<RefCell<Node>>>>, id_node: HashMap<String, Rc<RefCell<Node>>>) -> Rc<RefCell<DOM>>{
-        Rc::new(RefCell::new(DOM{root_node, classes_node, id_node}))
+    pub fn new(root_node: DomElem) -> Rc<RefCell<DOM>>{
+        Rc::new(RefCell::new(DOM{root_node, classes_node:HashMap::new(), id_node:HashMap::new()}))
     }
 
     pub fn set_root(&mut self, root_node: DomElem) {
