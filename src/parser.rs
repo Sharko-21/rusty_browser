@@ -42,10 +42,9 @@ pub fn parse_string_to_dom(body: &str) -> Rc<RefCell<dom::DOM>> {
 pub fn tokenize(body: &str) -> Vec<String> {
     let mut tokens: Vec<String> = vec![];
     let mut token: String = String::new();
-    let mut i = -1;
     let mut text_mode = TEXT_MODE_OFF;
+
     for character in body.trim().chars() {
-        i += 1;
         if character == '\n'{
             if token.chars().count() > 0 {
                 tokens.push(token);
@@ -53,6 +52,7 @@ pub fn tokenize(body: &str) -> Vec<String> {
             }
             continue
         }
+
         if (text_mode == TEXT_DOUBLE_QUOTE_MODE_ON || text_mode == TEXT_SINGLE_QUOTE_MODE_ON || text_mode == TEXT_BETWEEN_TAGS_MODE_ON) {
             if text_mode == TEXT_DOUBLE_QUOTE_MODE_ON && character == LEX_ATTR_VALUE_DOUBLE_QUOTE {
                 text_mode = TEXT_MODE_OFF;
@@ -73,6 +73,7 @@ pub fn tokenize(body: &str) -> Vec<String> {
             }
             continue
         }
+
         if character == ' ' {
             if token != "".to_string() {
                 tokens.push(token);
@@ -89,6 +90,7 @@ pub fn tokenize(body: &str) -> Vec<String> {
                     text_mode = TEXT_BETWEEN_TAGS_MODE_ON;
                 }
             }
+
             let string_character = character.to_string();
             if token == LEX_TAG_OPENER.to_string() {
                 if string_character == LEX_CLOSING_TAG_MARKER.to_string() {
@@ -98,6 +100,7 @@ pub fn tokenize(body: &str) -> Vec<String> {
                     continue;
                 }
             }
+
             if string_character == LEX_TAG_OPENER.to_string() {
                 if token != "".to_string() {
                     tokens.push(token);
@@ -106,6 +109,7 @@ pub fn tokenize(body: &str) -> Vec<String> {
                 token = token.add(string_character.as_ref());
                 continue;
             }
+
             if token != "".to_string() {
                 tokens.push(token);
                 token = String::new();
